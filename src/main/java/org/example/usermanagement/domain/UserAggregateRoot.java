@@ -1,6 +1,7 @@
-package org.example.usermanagement;
+package org.example.usermanagement.domain;
 
 import lombok.Getter;
+import org.example.usermanagement.*;
 
 @Getter
 public class UserAggregateRoot {

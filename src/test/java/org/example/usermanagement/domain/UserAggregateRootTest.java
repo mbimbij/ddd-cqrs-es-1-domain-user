@@ -1,5 +1,6 @@
-package org.example.usermanagement;
+package org.example.usermanagement.domain;
 
+import org.example.usermanagement.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

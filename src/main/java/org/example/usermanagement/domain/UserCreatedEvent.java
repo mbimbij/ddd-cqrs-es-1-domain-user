@@ -1,4 +1,4 @@
-package org.example.usermanagement;
+package org.example.usermanagement.domain;
 
 import lombok.Value;
 

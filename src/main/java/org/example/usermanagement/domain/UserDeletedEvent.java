@@ -1,4 +1,4 @@
-package org.example.usermanagement;
+package org.example.usermanagement.domain;
 
 public class UserDeletedEvent implements DomainEvent {
 }
