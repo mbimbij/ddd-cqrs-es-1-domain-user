@@ -1,6 +1,5 @@
 package org.example.usermanagement;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +40,35 @@ public class UserTest {
             softAssertions.assertThat(user.getFirstName()).isEqualTo(new FirstName("firstname"));
             softAssertions.assertThat(user.getLastName()).isEqualTo(new LastName("lastname"));
             softAssertions.assertThat(user.getEmailAddress()).isEqualTo(new EmailAddress("emailaddress"));
+        });
+    }
+
+    @Test
+    void canApplyMultipleEventsToUser() {
+        // GIVEN
+        User user = new User(id);
+        UserCreatedEvent userCreatedEvent = new UserCreatedEvent(
+                new FirstName("firstname"),
+                new LastName("lastname"),
+                new EmailAddress("emailaddress")
+        );
+        UserChangedFirstNameEvent userChangedFirstNameEvent = new UserChangedFirstNameEvent(new FirstName("firstname2"));
+        UserChangedFirstNameEvent userChangedFirstNameEvent2 = new UserChangedFirstNameEvent(new FirstName("firstname3"));
+        UserChangedLastNameEvent userChangedLastNameEvent = new UserChangedLastNameEvent(new LastName("lastname2"));
+        UserChangedEmailAddress userChangedEmailAddress = new UserChangedEmailAddress(new EmailAddress("emailaddress2"));
+
+        // WHEN
+        user.apply(userCreatedEvent);
+        user.apply(userChangedFirstNameEvent);
+        user.apply(userChangedFirstNameEvent2);
+        user.apply(userChangedLastNameEvent);
+        user.apply(userChangedEmailAddress);
+
+        // THEN
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(user.getFirstName()).isEqualTo(new FirstName("firstname3"));
+            softAssertions.assertThat(user.getLastName()).isEqualTo(new LastName("lastname2"));
+            softAssertions.assertThat(user.getEmailAddress()).isEqualTo(new EmailAddress("emailaddress2"));
         });
     }
 }

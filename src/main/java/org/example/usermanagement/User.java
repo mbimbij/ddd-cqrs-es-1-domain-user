@@ -18,4 +18,16 @@ public class User {
         lastName = userCreatedEvent.getLastName();
         emailAddress = userCreatedEvent.getEmailAddress();
     }
+
+    public void apply(UserChangedFirstNameEvent userChangedFirstNameEvent) {
+        firstName = userChangedFirstNameEvent.getFirstname();
+    }
+
+    public void apply(UserChangedLastNameEvent userChangedLastNameEvent) {
+        lastName = userChangedLastNameEvent.getLastname();
+    }
+
+    public void apply(UserChangedEmailAddress userChangedEmailAddress) {
+        emailAddress = userChangedEmailAddress.getEmailAddress();
+    }
 }
