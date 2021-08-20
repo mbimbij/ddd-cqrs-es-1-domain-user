@@ -9,23 +9,17 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 public class UserTest {
 
     private UserId id;
+    private User user;
 
     @BeforeEach
     void setUp() {
         id = new UserId("id");
-    }
-
-    @Test
-    void canCreateUser() {
-        UserId userId = id;
-        User user = new User(userId);
-        assertThat(user.getId()).isEqualTo(new UserId("id"));
+        user = new User(id);
     }
 
     @Test
     void canApply1EventToUser() {
         // GIVEN
-        User user = new User(id);
         UserCreatedEvent userCreatedEvent = new UserCreatedEvent(
                 new FirstName("firstname"),
                 new LastName("lastname"),
@@ -47,7 +41,6 @@ public class UserTest {
     @Test
     void canApplyMultipleEventsToUser() {
         // GIVEN
-        User user = new User(id);
         UserCreatedEvent userCreatedEvent = new UserCreatedEvent(
                 new FirstName("firstname"),
                 new LastName("lastname"),
