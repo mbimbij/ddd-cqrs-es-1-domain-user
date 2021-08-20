@@ -33,11 +33,8 @@ public class User {
         emailAddress = userChangedEmailAddressEvent.getEmailAddress();
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public void apply(UserDeletedEvent userDeletedEvent) {
         deleted = true;
     }
+
 }
