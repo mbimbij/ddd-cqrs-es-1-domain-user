@@ -8,12 +8,14 @@ public class User {
     private FirstName firstName;
     private LastName lastName;
     private EmailAddress emailAddress;
+    private boolean deleted;
 
     User(UserId id) {
         this.id = id;
     }
 
     public void apply(UserCreatedEvent userCreatedEvent) {
+        deleted = false;
         firstName = userCreatedEvent.getFirstName();
         lastName = userCreatedEvent.getLastName();
         emailAddress = userCreatedEvent.getEmailAddress();
@@ -27,7 +29,15 @@ public class User {
         lastName = userChangedLastNameEvent.getLastname();
     }
 
-    public void apply(UserChangedEmailAddress userChangedEmailAddress) {
-        emailAddress = userChangedEmailAddress.getEmailAddress();
+    public void apply(UserChangedEmailAddressEvent userChangedEmailAddressEvent) {
+        emailAddress = userChangedEmailAddressEvent.getEmailAddress();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void apply(UserDeletedEvent userDeletedEvent) {
+        deleted = true;
     }
 }

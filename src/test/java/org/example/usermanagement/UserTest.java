@@ -40,6 +40,7 @@ public class UserTest {
             softAssertions.assertThat(user.getFirstName()).isEqualTo(new FirstName("firstname"));
             softAssertions.assertThat(user.getLastName()).isEqualTo(new LastName("lastname"));
             softAssertions.assertThat(user.getEmailAddress()).isEqualTo(new EmailAddress("emailaddress"));
+            softAssertions.assertThat(user.isDeleted()).isFalse();
         });
     }
 
@@ -55,20 +56,23 @@ public class UserTest {
         UserChangedFirstNameEvent userChangedFirstNameEvent = new UserChangedFirstNameEvent(new FirstName("firstname2"));
         UserChangedFirstNameEvent userChangedFirstNameEvent2 = new UserChangedFirstNameEvent(new FirstName("firstname3"));
         UserChangedLastNameEvent userChangedLastNameEvent = new UserChangedLastNameEvent(new LastName("lastname2"));
-        UserChangedEmailAddress userChangedEmailAddress = new UserChangedEmailAddress(new EmailAddress("emailaddress2"));
+        UserChangedEmailAddressEvent userChangedEmailAddressEvent = new UserChangedEmailAddressEvent(new EmailAddress("emailaddress2"));
+        UserDeletedEvent userDeletedEvent = new UserDeletedEvent();
 
         // WHEN
         user.apply(userCreatedEvent);
         user.apply(userChangedFirstNameEvent);
         user.apply(userChangedFirstNameEvent2);
         user.apply(userChangedLastNameEvent);
-        user.apply(userChangedEmailAddress);
+        user.apply(userChangedEmailAddressEvent);
+        user.apply(userDeletedEvent);
 
         // THEN
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(user.getFirstName()).isEqualTo(new FirstName("firstname3"));
             softAssertions.assertThat(user.getLastName()).isEqualTo(new LastName("lastname2"));
             softAssertions.assertThat(user.getEmailAddress()).isEqualTo(new EmailAddress("emailaddress2"));
+            softAssertions.assertThat(user.isDeleted()).isTrue();
         });
     }
 }
