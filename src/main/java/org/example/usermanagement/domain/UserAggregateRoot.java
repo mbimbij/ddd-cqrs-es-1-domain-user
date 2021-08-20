@@ -1,7 +1,7 @@
 package org.example.usermanagement.domain;
 
 import lombok.Getter;
-import org.example.usermanagement.*;
+import org.example.usermanagement.application.*;
 
 @Getter
 public class UserAggregateRoot {
@@ -11,8 +11,15 @@ public class UserAggregateRoot {
     private EmailAddress emailAddress;
     private boolean deleted;
 
-    UserAggregateRoot(UserId id) {
+    public UserAggregateRoot(UserId id) {
         this.id = id;
+    }
+
+    public UserAggregateRoot(UserId userId, FirstName firstName, LastName lastName, EmailAddress emailAddress) {
+        id = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
     }
 
     public void apply(UserCreatedEvent userCreatedEvent) {
@@ -38,6 +45,13 @@ public class UserAggregateRoot {
         deleted = true;
     }
 
+    public UserCreatedEvent handle(CreateUserCommand command) {
+        firstName = command.getFirstName();
+        lastName = command.getLastName();
+        emailAddress = command.getEmailAddress();
+        return new UserCreatedEvent(firstName, lastName, emailAddress);
+    }
+
     public UserChangedFirstNameEvent handle(ChangeUserFirstNameCommand command) {
         firstName = command.getFirstName();
         return new UserChangedFirstNameEvent(firstName);
@@ -56,12 +70,5 @@ public class UserAggregateRoot {
     public UserDeletedEvent handle(DeleteUserCommand command) {
         deleted = true;
         return new UserDeletedEvent();
-    }
-
-    public UserCreatedEvent handle(CreateUserCommand command) {
-        firstName = command.getFirstName();
-        lastName = command.getLastName();
-        emailAddress = command.getEmailAddress();
-        return new UserCreatedEvent(firstName, lastName, emailAddress);
     }
 }

@@ -1,4 +1,4 @@
-package org.example.usermanagement;
+package org.example.usermanagement.application;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
