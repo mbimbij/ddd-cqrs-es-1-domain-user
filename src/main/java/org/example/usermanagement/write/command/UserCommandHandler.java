@@ -1,8 +1,10 @@
 package org.example.usermanagement.write.command;
 
 import lombok.RequiredArgsConstructor;
-import org.example.usermanagement.write.domain.*;
-import org.example.usermanagement.utils.Pair;
+import org.example.usermanagement.write.domain.DomainEventPublisher;
+import org.example.usermanagement.write.domain.UserAggregate;
+import org.example.usermanagement.write.domain.UserCreatedEvent;
+import org.example.usermanagement.write.domain.UserFactory;
 
 @RequiredArgsConstructor
 public class UserCommandHandler {
@@ -10,9 +12,12 @@ public class UserCommandHandler {
     private final DomainEventPublisher eventPublisher;
 
     public void createUser(CreateUserCommand createUserCommand) {
-        Pair<UserAggregate, UserCreatedEvent> createdEventPair = factory.createUser(createUserCommand.getFirstName(), createUserCommand.getLastName(), createUserCommand.getEmailAddress());
-        UserAggregate userAggregate = createdEventPair.getFirstElement();
-        UserCreatedEvent userCreatedEvent = createdEventPair.getSecondElement();
+        UserAggregate userAggregate = factory.createUser(createUserCommand.getFirstName(),
+                createUserCommand.getLastName(),
+                createUserCommand.getEmailAddress());
+        UserCreatedEvent userCreatedEvent = new UserCreatedEvent(userAggregate.getFirstName(),
+                userAggregate.getLastName(),
+                userAggregate.getEmailAddress());
         eventPublisher.publish(userCreatedEvent);
     }
 }
