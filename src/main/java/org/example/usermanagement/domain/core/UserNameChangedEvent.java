@@ -1,9 +1,9 @@
 package org.example.usermanagement.domain.core;
 
-public class UserChangedUserNameEvent extends DomainEvent {
+public class UserNameChangedEvent extends DomainEvent {
     private final UserName newUserName;
 
-    public UserChangedUserNameEvent(UserId userId, UserName newUserName) {
+    public UserNameChangedEvent(UserId userId, UserName newUserName) {
         this.userId = userId;
         this.newUserName = newUserName;
     }

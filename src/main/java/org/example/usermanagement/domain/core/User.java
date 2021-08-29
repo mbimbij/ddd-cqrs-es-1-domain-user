@@ -14,8 +14,13 @@ public class User {
     private UserName userName;
     private EmailAddress emailAddress;
 
-    public UserChangedUserNameEvent changeUsername(UserName newUserName) {
+    public UserNameChangedEvent changeUsername(UserName newUserName) {
         this.userName = newUserName;
-        return new UserChangedUserNameEvent(userId, newUserName);
+        return new UserNameChangedEvent(userId, newUserName);
+    }
+
+    public EmailAddressChangedEvent changeEmailAddress(EmailAddress newEmailAddress) {
+        this.emailAddress = newEmailAddress;
+        return new EmailAddressChangedEvent(userId, newEmailAddress);
     }
 }

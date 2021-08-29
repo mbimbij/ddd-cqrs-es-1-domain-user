@@ -18,10 +18,25 @@ public class UserShould {
         UserId userId = new UserId(1);
         User user = new User(userId, new UserName("username"), new EmailAddress("toto@mail.com"));
         UserName newUserName = new UserName("othername");
-        UserChangedUserNameEvent expectedEvent = new UserChangedUserNameEvent(userId, newUserName);
+        UserNameChangedEvent expectedEvent = new UserNameChangedEvent(userId, newUserName);
 
         // WHEN
-        UserChangedUserNameEvent event = user.changeUsername(newUserName);
+        UserNameChangedEvent event = user.changeUsername(newUserName);
+
+        // THEN
+        assertThat(event).isEqualTo(expectedEvent);
+    }
+
+    @Test
+    void returnEmailAddressChangedEvent_whenChangeEmailAddress() {
+        // GIVEN
+        UserId userId = new UserId(1);
+        User user = new User(userId, new UserName("username"), new EmailAddress("toto@mail.com"));
+        EmailAddress newEmailAddress = new EmailAddress("newEmailAddress");
+        EmailAddressChangedEvent expectedEvent = new EmailAddressChangedEvent(userId, newEmailAddress);
+
+        // WHEN
+        EmailAddressChangedEvent event = user.changeEmailAddress(newEmailAddress);
 
         // THEN
         assertThat(event).isEqualTo(expectedEvent);
