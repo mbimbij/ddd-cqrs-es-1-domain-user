@@ -1,6 +1,7 @@
-package org.example.usermanagement.domain.core;
+package org.example.usermanagement.domain;
 
 import org.assertj.core.api.SoftAssertions;
+import org.example.usermanagement.domain.*;
 import org.example.usermanagement.utils.Pair;
 import org.junit.jupiter.api.Test;
 

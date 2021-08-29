@@ -1,4 +1,4 @@
-package org.example.usermanagement.domain.core;
+package org.example.usermanagement.domain;
 
 import java.util.Collection;
 

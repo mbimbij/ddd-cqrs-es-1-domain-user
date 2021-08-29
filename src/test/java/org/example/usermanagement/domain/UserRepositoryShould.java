@@ -1,7 +1,8 @@
-package org.example.usermanagement.domain.core;
+package org.example.usermanagement.domain;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
+import org.example.usermanagement.domain.*;
 import org.example.usermanagement.rightside.InMemoryEventStore;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.example.usermanagement.domain.core.UserId.nextUserId;
+import static org.example.usermanagement.domain.UserId.nextUserId;
 
 class UserRepositoryShould {
     @Test

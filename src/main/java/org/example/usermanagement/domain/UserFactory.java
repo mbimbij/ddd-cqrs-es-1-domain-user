@@ -1,8 +1,8 @@
-package org.example.usermanagement.domain.core;
+package org.example.usermanagement.domain;
 
 import org.example.usermanagement.utils.Pair;
 
-import static org.example.usermanagement.domain.core.UserId.nextUserId;
+import static org.example.usermanagement.domain.UserId.nextUserId;
 
 public class UserFactory {
     public Pair<User, UserCreatedEvent> createUser(UserName username, EmailAddress emailAddress) {

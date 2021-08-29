@@ -1,9 +1,10 @@
-package org.example.usermanagement.domain.core;
+package org.example.usermanagement.domain;
 
+import org.example.usermanagement.domain.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.usermanagement.domain.core.UserId.nextUserId;
+import static org.example.usermanagement.domain.UserId.nextUserId;
 
 public class UserShould {
 

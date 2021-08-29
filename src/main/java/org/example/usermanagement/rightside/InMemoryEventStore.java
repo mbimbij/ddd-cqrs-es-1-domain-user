@@ -1,8 +1,8 @@
 package org.example.usermanagement.rightside;
 
 import org.example.usermanagement.domain.core.DomainEvent;
-import org.example.usermanagement.domain.core.EventStore;
-import org.example.usermanagement.domain.core.UserId;
+import org.example.usermanagement.domain.EventStore;
+import org.example.usermanagement.domain.UserId;
 
 import java.util.Collection;
 import java.util.Collections;
