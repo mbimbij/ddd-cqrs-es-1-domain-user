@@ -1,17 +1,18 @@
 package org.example.usermanagement.rightside;
 
-import org.example.usermanagement.domain.core.DomainEvent;
+import org.example.usermanagement.domain.DomainEvent;
 import org.example.usermanagement.domain.EventStore;
 import org.example.usermanagement.domain.UserId;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryEventStore implements EventStore {
     private final Map<UserId, List<DomainEvent>> pastEvents;
+
+    public InMemoryEventStore() {
+        pastEvents = new HashMap<>();
+    }
 
     public InMemoryEventStore(Collection<? extends DomainEvent> pastEvents) {
         this.pastEvents = pastEvents.stream()
@@ -21,5 +22,18 @@ public class InMemoryEventStore implements EventStore {
     @Override
     public Collection<DomainEvent> getEventsByUserId(UserId userId) {
         return pastEvents.getOrDefault(userId, Collections.emptyList());
+    }
+
+    @Override
+    public void store(DomainEvent event) {
+        UserId userId = event.getUserId();
+        pastEvents.putIfAbsent(userId, new ArrayList<>());
+        pastEvents.get(userId).add(event);
+    }
+
+    public Collection<DomainEvent> getEventsAsCollection(){
+        return pastEvents.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 }
