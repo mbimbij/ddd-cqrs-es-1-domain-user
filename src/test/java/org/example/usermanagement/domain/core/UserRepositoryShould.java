@@ -1,6 +1,7 @@
 package org.example.usermanagement.domain.core;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -82,5 +83,35 @@ class UserRepositoryShould {
 
         // THEN
         Assertions.assertThat(userOptional).hasValue(expectedUser);
+    }
+
+    @Test
+    void distinguishBetween2Users_given2PastEventsHistories() {
+        // GIVEN
+        UserId userId1 = nextUserId();
+        UserId userId2 = nextUserId();
+        UserName username1 = new UserName("username1");
+        UserName newUsername = new UserName("newusername");
+        UserName username2 = new UserName("username1");
+        EmailAddress emailAddress1 = new EmailAddress("emailAddress1");
+        EmailAddress emailAddress2 = new EmailAddress("emailAddress2");
+        List<DomainEvent> pastEvents = List.of(
+                new UserCreatedEvent(userId1, username1, emailAddress1),
+                new UserCreatedEvent(userId2, username2, emailAddress2),
+                new UserChangedUserNameEvent(userId1, newUsername)
+        );
+        UserRepository userRepository = new UserRepository(pastEvents);
+        User expectedUser1 = new User(userId1, newUsername, emailAddress1);
+        User expectedUser2 = new User(userId2, username2, emailAddress2);
+
+        // WHEN
+        Optional<User> userOptional1 = userRepository.findById(userId1);
+        Optional<User> userOptional2 = userRepository.findById(userId2);
+
+        // THEN
+        SoftAssertions.assertSoftly(softAssertions -> {
+            Assertions.assertThat(userOptional1).hasValue(expectedUser1);
+            Assertions.assertThat(userOptional2).hasValue(expectedUser2);
+        });
     }
 }
