@@ -2,6 +2,7 @@ package org.example.usermanagement.domain.core;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
+import org.example.usermanagement.rightside.InMemoryEventStore;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -14,7 +15,8 @@ class UserRepositoryShould {
     @Test
     void returnEmpty_ifUserIdNotFound() {
         // GIVEN
-        UserRepository userRepository = new UserRepository(Collections.emptyList());
+        EventStore eventStore = new InMemoryEventStore(Collections.emptyList());
+        UserRepository userRepository = new UserRepository(eventStore);
         UserId userId = nextUserId();
 
         // WHEN
@@ -31,7 +33,8 @@ class UserRepositoryShould {
         UserName username = new UserName("username");
         EmailAddress emailAddress = new EmailAddress("emailAddress");
         List<UserCreatedEvent> pastEvents = List.of(new UserCreatedEvent(userId, username, emailAddress));
-        UserRepository userRepository = new UserRepository(pastEvents);
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
+        UserRepository userRepository = new UserRepository(eventStore);
         User expectedUser = new User(userId, username, emailAddress);
 
         // WHEN
@@ -52,7 +55,8 @@ class UserRepositoryShould {
                 new UserCreatedEvent(userId, username, emailAddress),
                 new UserChangedUserNameEvent(userId, newUsername)
         );
-        UserRepository userRepository = new UserRepository(pastEvents);
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
+        UserRepository userRepository = new UserRepository(eventStore);
         User expectedUser = new User(userId, newUsername, emailAddress);
 
         // WHEN
@@ -75,7 +79,8 @@ class UserRepositoryShould {
                 new UserChangedUserNameEvent(userId, newUsername),
                 new UserChangedEmailAddressEvent(userId, newEmailAddress)
         );
-        UserRepository userRepository = new UserRepository(pastEvents);
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
+        UserRepository userRepository = new UserRepository(eventStore);
         User expectedUser = new User(userId, newUsername, newEmailAddress);
 
         // WHEN
@@ -100,7 +105,8 @@ class UserRepositoryShould {
                 new UserCreatedEvent(userId2, username2, emailAddress2),
                 new UserChangedUserNameEvent(userId1, newUsername)
         );
-        UserRepository userRepository = new UserRepository(pastEvents);
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
+        UserRepository userRepository = new UserRepository(eventStore);
         User expectedUser1 = new User(userId1, newUsername, emailAddress1);
         User expectedUser2 = new User(userId2, username2, emailAddress2);
 
