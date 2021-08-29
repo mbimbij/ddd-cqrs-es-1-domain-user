@@ -15,7 +15,8 @@ class UserRepositoryShould {
     @Test
     void returnEmpty_ifUserIdNotFound() {
         // GIVEN
-        EventStore eventStore = new InMemoryEventStore(Collections.emptyList());
+        List<DomainEvent> pastEvents = Collections.emptyList();
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
         UserRepository userRepository = new UserRepository(eventStore);
         UserId userId = nextUserId();
 
@@ -32,9 +33,12 @@ class UserRepositoryShould {
         UserId userId = nextUserId();
         UserName username = new UserName("username");
         EmailAddress emailAddress = new EmailAddress("emailAddress");
+
         List<UserCreatedEvent> pastEvents = List.of(new UserCreatedEvent(userId, username, emailAddress));
+
         EventStore eventStore = new InMemoryEventStore(pastEvents);
         UserRepository userRepository = new UserRepository(eventStore);
+
         User expectedUser = new User(userId, username, emailAddress);
 
         // WHEN
@@ -51,12 +55,15 @@ class UserRepositoryShould {
         UserName username = new UserName("username");
         UserName newUsername = new UserName("newusername");
         EmailAddress emailAddress = new EmailAddress("emailAddress");
+
         List<DomainEvent> pastEvents = List.of(
                 new UserCreatedEvent(userId, username, emailAddress),
                 new UserChangedUserNameEvent(userId, newUsername)
         );
+
         EventStore eventStore = new InMemoryEventStore(pastEvents);
         UserRepository userRepository = new UserRepository(eventStore);
+
         User expectedUser = new User(userId, newUsername, emailAddress);
 
         // WHEN
@@ -74,13 +81,16 @@ class UserRepositoryShould {
         UserName newUsername = new UserName("newusername");
         EmailAddress emailAddress = new EmailAddress("emailAddress");
         EmailAddress newEmailAddress = new EmailAddress("newemailAddress");
+
         List<DomainEvent> pastEvents = List.of(
                 new UserCreatedEvent(userId, username, emailAddress),
                 new UserChangedUserNameEvent(userId, newUsername),
                 new UserChangedEmailAddressEvent(userId, newEmailAddress)
         );
+
         EventStore eventStore = new InMemoryEventStore(pastEvents);
         UserRepository userRepository = new UserRepository(eventStore);
+
         User expectedUser = new User(userId, newUsername, newEmailAddress);
 
         // WHEN
@@ -100,13 +110,16 @@ class UserRepositoryShould {
         UserName username2 = new UserName("username1");
         EmailAddress emailAddress1 = new EmailAddress("emailAddress1");
         EmailAddress emailAddress2 = new EmailAddress("emailAddress2");
+
         List<DomainEvent> pastEvents = List.of(
                 new UserCreatedEvent(userId1, username1, emailAddress1),
                 new UserCreatedEvent(userId2, username2, emailAddress2),
                 new UserChangedUserNameEvent(userId1, newUsername)
         );
+
         EventStore eventStore = new InMemoryEventStore(pastEvents);
         UserRepository userRepository = new UserRepository(eventStore);
+
         User expectedUser1 = new User(userId1, newUsername, emailAddress1);
         User expectedUser2 = new User(userId2, username2, emailAddress2);
 
