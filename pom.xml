@@ -23,7 +23,6 @@
         <cucumber.version>6.11.0</cucumber.version>
 
         <maven-surefire-failsafe-plugin.version>3.0.0-M5</maven-surefire-failsafe-plugin.version>
-        <guava.version>30.1.1-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -44,6 +43,7 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

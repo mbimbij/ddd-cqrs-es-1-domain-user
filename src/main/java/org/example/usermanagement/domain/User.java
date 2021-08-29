@@ -1,15 +1,22 @@
 package org.example.usermanagement.domain;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString
 @EqualsAndHashCode
 public class User {
     private final UserId id;
     private UserName userName;
     private EmailAddress emailAddress;
+
+    User(UserId id, UserName userName, EmailAddress emailAddress) {
+        this.id = id;
+        this.userName = userName;
+        this.emailAddress = emailAddress;
+    }
 
     public UserChangedUserNameEvent changeUsername(UserName newUserName) {
         this.userName = newUserName;
