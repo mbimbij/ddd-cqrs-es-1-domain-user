@@ -24,11 +24,17 @@ public class User {
     public void apply(DomainEvent event) {
         if (event instanceof UserCreatedEvent) {
             apply((UserCreatedEvent) event);
+        }else if (event instanceof UserChangedUserNameEvent) {
+            apply((UserChangedUserNameEvent) event);
         }
     }
 
     public void apply(UserCreatedEvent userCreatedEvent) {
         this.userName = userCreatedEvent.getUsername();
         this.emailAddress = userCreatedEvent.getEmailAddress();
+    }
+
+    public void apply(UserChangedUserNameEvent userChangedUserNameEvent) {
+        this.userName = userChangedUserNameEvent.getNewUserName();
     }
 }
