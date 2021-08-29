@@ -1,7 +1,10 @@
 package org.example.usermanagement.domain.core;
 
+import lombok.Value;
+
+@Value
 public class UserChangedEmailAddressEvent extends DomainEvent {
-    private final EmailAddress newEmailAddress;
+    EmailAddress newEmailAddress;
 
     public UserChangedEmailAddressEvent(UserId userId, EmailAddress newEmailAddress) {
         this.userId = userId;

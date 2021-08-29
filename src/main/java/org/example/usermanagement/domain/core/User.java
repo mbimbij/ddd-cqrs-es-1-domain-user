@@ -24,8 +24,10 @@ public class User {
     public void apply(DomainEvent event) {
         if (event instanceof UserCreatedEvent) {
             apply((UserCreatedEvent) event);
-        }else if (event instanceof UserChangedUserNameEvent) {
+        } else if (event instanceof UserChangedUserNameEvent) {
             apply((UserChangedUserNameEvent) event);
+        } else if (event instanceof UserChangedEmailAddressEvent) {
+            apply((UserChangedEmailAddressEvent) event);
         }
     }
 
@@ -36,5 +38,9 @@ public class User {
 
     public void apply(UserChangedUserNameEvent userChangedUserNameEvent) {
         this.userName = userChangedUserNameEvent.getNewUserName();
+    }
+
+    public void apply(UserChangedEmailAddressEvent userChangedEmailAddressEvent) {
+        this.emailAddress = userChangedEmailAddressEvent.getNewEmailAddress();
     }
 }

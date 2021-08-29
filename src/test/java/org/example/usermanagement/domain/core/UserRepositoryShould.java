@@ -60,4 +60,27 @@ class UserRepositoryShould {
         // THEN
         Assertions.assertThat(userOptional).hasValue(expectedUser);
     }
+
+    @Test
+    void returnAUser_givenAUserCreatedEventEmitted_andUserChangedUserNameEventEmitted_andUserChangedEmailAddressEventEmitted() {
+        // GIVEN
+        UserId userId = nextUserId();
+        UserName username = new UserName("username");
+        UserName newUsername = new UserName("newusername");
+        EmailAddress emailAddress = new EmailAddress("emailAddress");
+        EmailAddress newEmailAddress = new EmailAddress("newemailAddress");
+        List<DomainEvent> pastEvents = List.of(
+                new UserCreatedEvent(userId, username, emailAddress),
+                new UserChangedUserNameEvent(userId, newUsername),
+                new UserChangedEmailAddressEvent(userId, newEmailAddress)
+        );
+        UserRepository userRepository = new UserRepository(pastEvents);
+        User expectedUser = new User(userId, newUsername, newEmailAddress);
+
+        // WHEN
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        // THEN
+        Assertions.assertThat(userOptional).hasValue(expectedUser);
+    }
 }
