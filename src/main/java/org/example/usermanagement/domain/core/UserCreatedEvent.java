@@ -3,8 +3,7 @@ package org.example.usermanagement.domain.core;
 import lombok.Value;
 
 @Value
-public class UserCreatedEvent {
-    UserId userId;
+public class UserCreatedEvent extends DomainEvent {
     UserName username;
     EmailAddress emailAddress;
 
