@@ -51,6 +51,8 @@ public class User {
             apply((UserChangedUserNameEvent) event);
         } else if (event instanceof UserChangedEmailAddressEvent) {
             apply((UserChangedEmailAddressEvent) event);
+        } else if (event instanceof UserDeletedEvent) {
+            apply((UserDeletedEvent) event);
         }
     }
 

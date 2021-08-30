@@ -2,7 +2,6 @@ package org.example.usermanagement.domain;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
-import org.example.usermanagement.domain.*;
 import org.example.usermanagement.rightside.InMemoryEventStore;
 import org.junit.jupiter.api.Test;
 
@@ -133,5 +132,30 @@ class UserRepositoryShould {
             Assertions.assertThat(userOptional1).hasValue(expectedUser1);
             Assertions.assertThat(userOptional2).hasValue(expectedUser2);
         });
+    }
+
+    @Test
+    void returnDeletedUser_whenUserDeleted() {
+        // GIVEN
+        UserId userId = nextUserId();
+        UserName username = new UserName("username");
+        EmailAddress emailAddress = new EmailAddress("emailAddress");
+
+        List<DomainEvent> pastEvents = List.of(
+                new UserCreatedEvent(userId, username, emailAddress),
+                new UserDeletedEvent(userId)
+        );
+
+        EventStore eventStore = new InMemoryEventStore(pastEvents);
+        UserRepository userRepository = new UserRepository(eventStore);
+
+        User expectedUser = new User(userId, username, emailAddress);
+        expectedUser.delete();
+
+        // WHEN
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        // THEN
+        Assertions.assertThat(userOptional).hasValue(expectedUser);
     }
 }
