@@ -81,4 +81,18 @@ public class UserShould {
             softAssertions.assertThat(user.isDeleted()).isTrue();
         });
     }
+
+    @Test
+    void beDeleted_whenHandleUserDeletedEvent() {
+        // GIVEN
+        UserId userId = nextUserId();
+        User user = new User(userId, new UserName("username"), new EmailAddress("toto@mail.com"));
+        assertThat(user.isDeleted()).isFalse();
+
+        // WHEN
+        user.apply(new UserDeletedEvent(userId));
+
+        // THEN
+        assertThat(user.isDeleted()).isTrue();
+    }
 }

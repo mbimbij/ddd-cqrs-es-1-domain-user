@@ -32,6 +32,18 @@ public class User {
         return new UserChangedEmailAddressEvent(id, newEmailAddress);
     }
 
+    public Optional<UserDeletedEvent> delete() {
+        if (!deleted) {
+            deleted = true;
+            return Optional.of(new UserDeletedEvent(id));
+        }
+        return Optional.empty();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void apply(DomainEvent event) {
         if (event instanceof UserCreatedEvent) {
             apply((UserCreatedEvent) event);
@@ -40,14 +52,6 @@ public class User {
         } else if (event instanceof UserChangedEmailAddressEvent) {
             apply((UserChangedEmailAddressEvent) event);
         }
-    }
-
-    public Optional<UserDeletedEvent> delete() {
-        if (!deleted) {
-            deleted = true;
-            return Optional.of(new UserDeletedEvent(id));
-        }
-        return Optional.empty();
     }
 
     public void apply(UserCreatedEvent userCreatedEvent) {
@@ -63,7 +67,7 @@ public class User {
         this.emailAddress = userChangedEmailAddressEvent.getNewEmailAddress();
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public void apply(UserDeletedEvent userDeletedEvent) {
+        deleted = true;
     }
 }
