@@ -11,11 +11,13 @@ public class User {
     private final UserId id;
     private UserName userName;
     private EmailAddress emailAddress;
+    private boolean deleted;
 
     User(UserId id, UserName userName, EmailAddress emailAddress) {
         this.id = id;
         this.userName = userName;
         this.emailAddress = emailAddress;
+        this.deleted = false;
     }
 
     public UserChangedUserNameEvent changeUsername(UserName newUserName) {
@@ -38,6 +40,11 @@ public class User {
         }
     }
 
+    public UserDeletedEvent delete() {
+        deleted = true;
+        return new UserDeletedEvent(id);
+    }
+
     public void apply(UserCreatedEvent userCreatedEvent) {
         this.userName = userCreatedEvent.getUsername();
         this.emailAddress = userCreatedEvent.getEmailAddress();
@@ -49,5 +56,9 @@ public class User {
 
     public void apply(UserChangedEmailAddressEvent userChangedEmailAddressEvent) {
         this.emailAddress = userChangedEmailAddressEvent.getNewEmailAddress();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
