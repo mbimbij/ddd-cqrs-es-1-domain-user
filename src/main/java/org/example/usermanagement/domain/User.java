@@ -4,6 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Optional;
+
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -40,9 +42,12 @@ public class User {
         }
     }
 
-    public UserDeletedEvent delete() {
-        deleted = true;
-        return new UserDeletedEvent(id);
+    public Optional<UserDeletedEvent> delete() {
+        if (!deleted) {
+            deleted = true;
+            return Optional.of(new UserDeletedEvent(id));
+        }
+        return Optional.empty();
     }
 
     public void apply(UserCreatedEvent userCreatedEvent) {

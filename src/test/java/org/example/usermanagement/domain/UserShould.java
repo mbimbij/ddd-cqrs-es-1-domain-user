@@ -2,6 +2,8 @@ package org.example.usermanagement.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.example.usermanagement.domain.UserId.nextUserId;
@@ -55,10 +57,27 @@ public class UserShould {
         UserDeletedEvent expectedEvent = new UserDeletedEvent(userId);
 
         // WHEN
-        UserDeletedEvent event = user.delete();
+        Optional<UserDeletedEvent> event = user.delete();
 
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(event).isEqualTo(expectedEvent);
+            softAssertions.assertThat(event).hasValue(expectedEvent);
+            softAssertions.assertThat(user.isDeleted()).isTrue();
+        });
+    }
+
+    @Test
+    void notReturnUserDeletedEvent_whenCallDeleteTwice() {
+        // GIVEN
+        UserId userId = nextUserId();
+        User user = new User(userId, new UserName("username"), new EmailAddress("toto@mail.com"));
+        assertThat(user.isDeleted()).isFalse();
+        user.delete();
+
+        // WHEN
+        Optional<UserDeletedEvent> event = user.delete();
+
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(event).isEmpty();
             softAssertions.assertThat(user.isDeleted()).isTrue();
         });
     }
