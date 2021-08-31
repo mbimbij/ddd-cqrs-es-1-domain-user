@@ -3,7 +3,6 @@ package org.example.usermanagement.rightside;
 import org.example.usermanagement.domain.DomainEvent;
 import org.example.usermanagement.domain.EventStore;
 import org.example.usermanagement.domain.UserId;
-import reactor.core.publisher.Flux;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,11 +37,11 @@ public class InMemoryEventStore implements EventStore {
     }
 
     @Override
-    public Flux<DomainEvent> getAllEvents() {
-        return Flux.fromIterable(getEventsAsCollection());
+    public Collection<DomainEvent> getAllEvents() {
+        return getEventsAsCollection();
     }
 
-    public Collection<DomainEvent> getEventsAsCollection(){
+    public Collection<DomainEvent> getEventsAsCollection() {
         return pastEvents.values().stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
