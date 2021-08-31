@@ -103,6 +103,27 @@ class ApplicationRestControllerShouldIT {
                 .verifyComplete();
     }
 
+    @Test
+    void findUserById_afterCreatingMultipleUsers() {
+        // GIVEN
+        User user1 = userApplicationService.createUser(new UserName("userName1"), new EmailAddress("emailAddress1"));
+        User user2 = userApplicationService.createUser(new UserName("userName2"), new EmailAddress("emailAddress2"));
+
+        // WHEN
+        Flux<UserResponseDto> responseFlux = webTestClient.get()
+                .uri("/users/"+user1.getId().getValue())
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(UserResponseDto.class)
+                .getResponseBody();
+
+        // THEN
+        StepVerifier.create(responseFlux)
+                .expectNext(UserResponseDto.from(user1))
+                .verifyComplete();
+    }
+
     @Configuration
     @Import(ApplicationRestController.class)
     static class TestConfiguration {

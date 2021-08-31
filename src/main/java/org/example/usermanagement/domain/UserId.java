@@ -12,4 +12,8 @@ public class UserId extends ValueObject<Integer> {
     public static UserId nextUserId() {
         return new UserId(sequence++);
     }
+
+    public static UserId fromValue(int value){
+        return new UserId(value);
+    }
 }
