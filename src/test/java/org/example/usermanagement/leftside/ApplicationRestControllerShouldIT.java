@@ -81,6 +81,28 @@ class ApplicationRestControllerShouldIT {
         verify(userApplicationService).createUser(eq(expectedUserName), eq(expectedEmailAddress));
     }
 
+    @Test
+    void returnAllEntities_afterCreation() {
+        // GIVEN
+        User user1 = userApplicationService.createUser(new UserName("userName1"), new EmailAddress("emailAddress1"));
+        User user2 = userApplicationService.createUser(new UserName("userName2"), new EmailAddress("emailAddress2"));
+
+        // WHEN
+        Flux<UserResponseDto> responseFlux = webTestClient.get()
+                .uri("/users")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(UserResponseDto.class)
+                .getResponseBody();
+
+        // THEN
+        StepVerifier.create(responseFlux)
+                .expectNext(UserResponseDto.from(user1))
+                .expectNext(UserResponseDto.from(user2))
+                .verifyComplete();
+    }
+
     @Configuration
     @Import(ApplicationRestController.class)
     static class TestConfiguration {

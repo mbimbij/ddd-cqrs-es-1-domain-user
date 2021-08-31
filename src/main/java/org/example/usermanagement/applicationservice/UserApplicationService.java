@@ -2,6 +2,7 @@ package org.example.usermanagement.applicationservice;
 
 import org.example.usermanagement.domain.*;
 import org.example.usermanagement.utils.Pair;
+import reactor.core.publisher.Flux;
 
 import java.util.Optional;
 
@@ -37,5 +38,9 @@ public class UserApplicationService {
 
     public Optional<User> findUserById(UserId userId) {
         return userRepository.findById(userId);
+    }
+
+    public Flux<User> findAll(){
+        return userRepository.findAll();
     }
 }

@@ -1,9 +1,11 @@
 package org.example.usermanagement.domain;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class UserRepository {
@@ -23,5 +25,12 @@ public class UserRepository {
             newUser.apply(event);
         }
         return newUser;
+    }
+
+    public Flux<User> findAll() {
+        return eventStore.getAllEvents()
+                .collect(Collectors.groupingBy(DomainEvent::getUserId))
+                .flatMapIterable(pastEvents -> new ArrayList<>(pastEvents.entrySet()))
+                .map(userPastEvents -> buildUserFromPastEvents(userPastEvents.getKey(), userPastEvents.getValue()));
     }
 }

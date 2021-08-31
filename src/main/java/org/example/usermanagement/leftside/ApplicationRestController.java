@@ -27,6 +27,7 @@ public class ApplicationRestController {
 
     @GetMapping
     public Flux<UserResponseDto> findAll() {
-        return Flux.empty();
+        return userApplicationService.findAll()
+                .map(UserResponseDto::from);
     }
 }
