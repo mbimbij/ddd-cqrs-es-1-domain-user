@@ -111,7 +111,7 @@ class ApplicationRestControllerShouldIT {
 
         // WHEN
         Flux<UserResponseDto> responseFlux = webTestClient.get()
-                .uri("/users/"+user1.getId().getValue())
+                .uri("/users/" + user1.getId().getValue())
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -122,6 +122,18 @@ class ApplicationRestControllerShouldIT {
         StepVerifier.create(responseFlux)
                 .expectNext(UserResponseDto.from(user1))
                 .verifyComplete();
+    }
+
+    @Test
+    void replyHttp400_whenGettingUserById_andIdNotNumeral() {
+        // WHEN
+        webTestClient.get()
+                .uri("/users/NotAnId")
+                .exchange()
+
+                //THEN
+                .expectStatus()
+                .isBadRequest();
     }
 
     @Configuration
