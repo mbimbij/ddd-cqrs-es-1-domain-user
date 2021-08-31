@@ -136,6 +136,22 @@ class ApplicationRestControllerShouldIT {
                 .isBadRequest();
     }
 
+    @Test
+    void replyWithEmptyFlux_whenUserDoesNotExist() {
+        // WHEN
+        Flux<UserResponseDto> responseFlux = webTestClient.get()
+                .uri("/users/1")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(UserResponseDto.class)
+                .getResponseBody();
+
+        // THEN
+        StepVerifier.create(responseFlux)
+                .verifyComplete();
+    }
+
     @Configuration
     @Import(ApplicationRestController.class)
     static class TestConfiguration {
