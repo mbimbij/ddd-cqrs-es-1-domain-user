@@ -3,8 +3,7 @@ package org.example.usermanagement.leftside;
 import lombok.Value;
 
 @Value
-public class UserDto {
-    int id;
+public class CreateUserRequestDto {
     String userName;
     String emailAddress;
 }

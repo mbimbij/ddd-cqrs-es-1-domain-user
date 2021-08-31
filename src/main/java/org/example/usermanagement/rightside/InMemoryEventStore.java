@@ -31,6 +31,11 @@ public class InMemoryEventStore implements EventStore {
         pastEvents.get(userId).add(event);
     }
 
+    @Override
+    public void deleteAll() {
+        pastEvents.clear();
+    }
+
     public Collection<DomainEvent> getEventsAsCollection(){
         return pastEvents.values().stream()
                 .flatMap(List::stream)

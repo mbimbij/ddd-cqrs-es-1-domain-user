@@ -17,9 +17,10 @@ public class UserApplicationService {
         this.eventStore = eventStore;
     }
 
-    public void createUser(UserName userName, EmailAddress emailAddress) {
+    public User createUser(UserName userName, EmailAddress emailAddress) {
         Pair<User, UserCreatedEvent> userEventPair = userFactory.createUser(userName, emailAddress);
         eventStore.store(userEventPair.getValue2());
+        return userEventPair.getValue1();
     }
 
     public void changeUsername(UserId userId, UserName newUserName) {
