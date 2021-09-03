@@ -7,6 +7,7 @@ import org.example.usermanagement.domain.UserId;
 import org.example.usermanagement.domain.UserName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +30,7 @@ public class ApplicationRestController {
         return Mono.just(UserResponseDto.from(user));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<UserResponseDto> findAll() {
         return Flux.fromIterable(userApplicationService.findAll())
                 .map(UserResponseDto::from);
