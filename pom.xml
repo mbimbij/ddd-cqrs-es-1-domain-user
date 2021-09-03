@@ -11,6 +11,7 @@
     <modules>
         <module>webflux-application</module>
         <module>domain</module>
+        <module>webmvc-application</module>
     </modules>
 
     <properties>
